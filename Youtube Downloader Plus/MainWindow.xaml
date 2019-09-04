@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Youtube_Downloader_Plus"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Youtube Download Plus" Height="450" Width="800">
     <Grid>
-        
+        <Button x:Name="Submit" Content="Submit" Margin="0,0,30,19" RenderTransformOrigin="5.006,16.139" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>
