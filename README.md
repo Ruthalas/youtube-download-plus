@@ -5,4 +5,4 @@
 
 The HTA version looks like this:
 
-![HTA Abomination](https://imgur.com/FBqwlGZ)
+![HTA Abomination](https://i.imgur.com/FBqwlGZ.png)
