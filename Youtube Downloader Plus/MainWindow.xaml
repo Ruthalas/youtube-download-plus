@@ -18,7 +18,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Name="textBlock1" Grid.Column="0" Grid.Row="0" Margin="2,2,2,2" Background="lightgray" Text="Text 1"/>
+                    <TextBlock x:Name="textBlock1" Grid.Column="0" Grid.Row="0" Margin="2,2,2,2" Background="lightgray"><Run Text="Settings for downloading. Press the button!"/></TextBlock>
 
                     <ScrollViewer Grid.Column="0" Grid.Row="1" Margin="2,2,2,2">
                         <TextBlock Name="textBlock2"  Background="lightgray" Text="Log Output:&#10;"/>
