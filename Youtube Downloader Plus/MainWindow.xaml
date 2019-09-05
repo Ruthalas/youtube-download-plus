@@ -5,8 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Youtube_Downloader_Plus"
         mc:Ignorable="d"
-        Title="Youtube Download Plus" Height="450" Width="800">
+        Title="Youtube Download Plus" Height="444.567" Width="380.785">
     <Grid>
-        <Button x:Name="Submit" Content="Submit" Margin="0,0,30,19" RenderTransformOrigin="5.006,16.139" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom"/>
+        <TabControl>
+            <TabItem Header="Download">
+                <Label Content="Content goes here..." />
+            </TabItem>
+            <TabItem Header="Folder Structure">
+                <Label Content="Content goes here..."/>
+            </TabItem>
+            <TabItem Header="Metadata">
+                <Label Content="Content goes here..."/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
