@@ -34,8 +34,14 @@ namespace Youtube_Downloader_Plus
             string strCommandParameters = "--version";
             string strWorkingDirectory = "W:\\VIDEO\\OTHER\\YOUTUBE Staging";
 
+            //Indicate the start of run...
+            textBlock2.Text = textBlock2.Text + "Running...&#10;";
+
             //Create process
             System.Diagnostics.Process pProcess = new System.Diagnostics.Process();
+
+            //Set the window to run hidden?
+            pProcess.StartInfo.CreateNoWindow = true;
 
             //strCommand is path and file name of command to run
             pProcess.StartInfo.FileName = strCommand;
