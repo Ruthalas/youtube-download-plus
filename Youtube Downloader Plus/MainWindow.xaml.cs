@@ -25,6 +25,11 @@ namespace Youtube_Downloader_Plus
         {
             InitializeComponent();
 
+        }
+
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
             string strCommand = "W:\\VIDEO\\OTHER\\YOUTUBE Staging\\youtube-dl.exe";
             string strCommandParameters = "--version";
             string strWorkingDirectory = "W:\\VIDEO\\OTHER\\YOUTUBE Staging";
@@ -55,13 +60,6 @@ namespace Youtube_Downloader_Plus
 
             //Wait for process to finish
             pProcess.WaitForExit();
-
-        }
-
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
