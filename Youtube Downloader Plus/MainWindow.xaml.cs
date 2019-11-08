@@ -35,7 +35,7 @@ namespace Youtube_Downloader_Plus
             string strWorkingDirectory = "W:\\VIDEO\\OTHER\\YOUTUBE Staging";
 
             //Indicate the start of run...
-            textBlock2.Text = textBlock2.Text + "Running...&#10;";
+            textBlock2.Text = textBlock2.Text + "Running...";
 
             //Create process
             System.Diagnostics.Process pProcess = new System.Diagnostics.Process();
@@ -62,7 +62,7 @@ namespace Youtube_Downloader_Plus
 
             //Get program output
             string strOutput = pProcess.StandardOutput.ReadToEnd();
-            textBlock2.Text = textBlock2.Text + strOutput;
+            textBlock2.Text = textBlock2.Text + "\n" + strOutput;
 
             //Wait for process to finish
             pProcess.WaitForExit();
