@@ -18,11 +18,13 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock x:Name="textBlock1" Grid.Column="0" Grid.Row="0" Margin="2,2,2,2" Background="lightgray"><Run Text=" Settings for downloading.&#10; Press the button!"/>
-                        <LineBreak></LineBreak><CheckBox Name="cbSubs">Get Subtitles</CheckBox>
-                        <LineBreak></LineBreak><CheckBox Name="cbDescription">Get Description (writes seperate file)</CheckBox>
-                        <LineBreak></LineBreak>Path: <TextBox Name="tbPath" Text="" Width="122" /> 
-                    </TextBlock>
+                    <TextBlock x:Name="textBlock1" Grid.Column="0" Grid.Row="0" Margin="2,2,2,2" Background="lightgray"><Run Text="Adjust the options below and click the Download button!"/><LineBreak/><LineBreak/><InlineUIContainer>
+                            <CheckBox x:Name="cbSubs" Content="Download subtitles/closed captioning"/>
+                        </InlineUIContainer><LineBreak/><InlineUIContainer>
+                            <CheckBox x:Name="cbDescription" Content="Download description (writes seperate file)"/>
+                        </InlineUIContainer><LineBreak/><Run Text="Save Path: "/><InlineUIContainer>
+                            <TextBox x:Name="tbPath" Text="" Width="209" /> 
+                        </InlineUIContainer></TextBlock>
 
                     <ScrollViewer Grid.Column="0" Grid.Row="1" Margin="2,2,2,2">
                         <TextBlock Name="textBlock2"  Background="lightgray" Text="Log Output:&#10;"/>
@@ -31,6 +33,6 @@
             </TabItem>
         </TabControl>
         <Button Name="btGetVersion" Content="Get Version" HorizontalAlignment="Left" Margin="276,248,0,0" VerticalAlignment="Top" Width="75" Click="Get_Version"/>
-        <Button Name="btBrowse" Content="Browse" HorizontalAlignment="Left" Margin="164,90,0,0" VerticalAlignment="Top" Width="75" Click="Browse_For_Folder"/>
+        <Button Name="btBrowse" Content="Browse" HorizontalAlignment="Left" Margin="276,88,0,0" VerticalAlignment="Top" Width="75" Click="Browse_For_Folder"/>
     </Grid>
 </Window>

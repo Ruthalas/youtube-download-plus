@@ -79,15 +79,15 @@ namespace Youtube_Downloader_Plus
             {
                 string path = dialog.FileName;
                 // Remove fake filename from resulting path
-                path = path.Replace("\\select.this.directory", "");
-                path = path.Replace(".this.directory", "");
+                path = path.Replace("\\select.a.directory", "");
+                path = path.Replace(".a.directory", "");
                 // If user has changed the filename, create the new directory
                 if (!System.IO.Directory.Exists(path))
                 {
                     System.IO.Directory.CreateDirectory(path);
                 }
                 // Our final value is in path
-                //textbox.Text = path;
+                tbPath.Text = path;
             }
         }
     }
