@@ -21,7 +21,7 @@
                     <TextBlock x:Name="textBlock1" Grid.Column="0" Grid.Row="0" Margin="2,2,2,2" Background="lightgray"><Run Text=" Settings for downloading.&#10; Press the button!"/>
                         <LineBreak></LineBreak><CheckBox Name="cbSubs">Get Subtitles</CheckBox>
                         <LineBreak></LineBreak><CheckBox Name="cbDescription">Get Description (writes seperate file)</CheckBox>
-                        <LineBreak></LineBreak>Path: <TextBox Name="tbPath" Text="Desired Path" />
+                        <LineBreak></LineBreak>Path: <TextBox Name="tbPath" Text="" Width="122" /> 
                     </TextBlock>
 
                     <ScrollViewer Grid.Column="0" Grid.Row="1" Margin="2,2,2,2">
@@ -30,6 +30,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button Content="Get Version" HorizontalAlignment="Left" Margin="276,248,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Button Name="btGetVersion" Content="Get Version" HorizontalAlignment="Left" Margin="276,248,0,0" VerticalAlignment="Top" Width="75" Click="Get_Version"/>
+        <Button Name="btBrowse" Content="Browse" HorizontalAlignment="Left" Margin="164,90,0,0" VerticalAlignment="Top" Width="75" Click="Browse_For_Folder"/>
     </Grid>
 </Window>

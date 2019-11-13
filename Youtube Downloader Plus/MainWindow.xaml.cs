@@ -27,8 +27,7 @@ namespace Youtube_Downloader_Plus
 
         }
 
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Get_Version(object sender, RoutedEventArgs e)
         {
             string strCommand = "W:\\VIDEO\\OTHER\\YOUTUBE Staging\\youtube-dl.exe";
             string strCommandParameters = "--version";
@@ -66,6 +65,30 @@ namespace Youtube_Downloader_Plus
 
             //Wait for process to finish
             pProcess.WaitForExit();
+        }
+
+        private void Browse_For_Folder(object sender, RoutedEventArgs e)
+        {
+            // Create a "Save As" dialog for selecting a directory (HACK)
+            var dialog = new Microsoft.Win32.SaveFileDialog();
+            dialog.InitialDirectory = ""; // Use current value for initial dir
+            dialog.Title = "Select a Directory"; // instead of default "Save As"
+            dialog.Filter = "Directory|*.a.directory"; // Prevents displaying files
+            dialog.FileName = "select"; // Filename will then be "select.this.directory"
+            if (dialog.ShowDialog() == true)
+            {
+                string path = dialog.FileName;
+                // Remove fake filename from resulting path
+                path = path.Replace("\\select.this.directory", "");
+                path = path.Replace(".this.directory", "");
+                // If user has changed the filename, create the new directory
+                if (!System.IO.Directory.Exists(path))
+                {
+                    System.IO.Directory.CreateDirectory(path);
+                }
+                // Our final value is in path
+                //textbox.Text = path;
+            }
         }
     }
 }
