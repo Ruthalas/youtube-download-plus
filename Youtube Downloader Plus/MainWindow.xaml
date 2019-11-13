@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Youtube_Downloader_Plus"
         mc:Ignorable="d"
-        Title="Youtube Download Plus" Height="444.567" Width="380.785">
+        Title="Youtube Download Plus" Height="445" Width="381">
     <Grid>
         <TabControl>
             <TabItem Header="Download">
@@ -18,7 +18,11 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock x:Name="textBlock1" Grid.Column="0" Grid.Row="0" Margin="2,2,2,2" Background="lightgray"><Run Text="Settings for downloading.&#10;Press the button!"/></TextBlock>
+                    <TextBlock x:Name="textBlock1" Grid.Column="0" Grid.Row="0" Margin="2,2,2,2" Background="lightgray"><Run Text=" Settings for downloading.&#10; Press the button!"/>
+                        <LineBreak></LineBreak><CheckBox Name="cbSubs">Get Subtitles</CheckBox>
+                        <LineBreak></LineBreak><CheckBox Name="cbDescription">Get Description (writes seperate file)</CheckBox>
+                        <LineBreak></LineBreak>Path: <TextBox Name="tbPath" Text="Desired Path" />
+                    </TextBlock>
 
                     <ScrollViewer Grid.Column="0" Grid.Row="1" Margin="2,2,2,2">
                         <TextBlock Name="textBlock2"  Background="lightgray" Text="Log Output:&#10;"/>
