@@ -24,7 +24,6 @@ namespace Youtube_Downloader_Plus
         public MainWindow()
         {
             InitializeComponent();
-
         }
 
         private void Get_Version(object sender, RoutedEventArgs e)
@@ -33,8 +32,8 @@ namespace Youtube_Downloader_Plus
             string strCommandParameters = "--version";
             string strWorkingDirectory = "W:\\VIDEO\\OTHER\\YOUTUBE Staging";
 
-            //Indicate the start of run...
-            textBlock2.Text = textBlock2.Text + "Running...";
+            //Indicate the start of run... (This doesn't show until the cmd closes, so it's useless)
+            //textBlock2.Text = textBlock2.Text + "Running..."; 
 
             //Create process
             System.Diagnostics.Process pProcess = new System.Diagnostics.Process();
@@ -61,7 +60,7 @@ namespace Youtube_Downloader_Plus
 
             //Get program output
             string strOutput = pProcess.StandardOutput.ReadToEnd();
-            textBlock2.Text = textBlock2.Text + "\n" + strOutput;
+            textBlock2.Text = textBlock2.Text + strOutput;
 
             //Wait for process to finish
             pProcess.WaitForExit();
@@ -90,5 +89,11 @@ namespace Youtube_Downloader_Plus
                 tbPath.Text = path;
             }
         }
+
+        private void Run_Download(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }
