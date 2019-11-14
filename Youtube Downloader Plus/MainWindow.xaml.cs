@@ -87,10 +87,12 @@ namespace Youtube_Downloader_Plus
 
             if (System.IO.Directory.Exists(tbPath.Text))
             {
+                textBlock2.Text = textBlock2.Text + "Provided path checks out, using it for download.";
                 strWorkingDirectory = tbPath.Text;
             }
             else
             {
+                textBlock2.Text = textBlock2.Text + "Provided path isn't valid, falling back to current directory.";
                 strWorkingDirectory = "W:\\VIDEO\\OTHER\\YOUTUBE Staging\\!TEMP - Copy";
             }
 
