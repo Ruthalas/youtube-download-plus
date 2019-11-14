@@ -32,32 +32,21 @@ namespace Youtube_Downloader_Plus
             string strCommandParameters = "--version";
             string strWorkingDirectory = "W:\\VIDEO\\OTHER\\YOUTUBE Staging";
 
-            //Indicate the start of run... (This doesn't show until the cmd closes, so it's useless)
-            //textBlock2.Text = textBlock2.Text + "Running..."; 
-
             //Create process
             System.Diagnostics.Process pProcess = new System.Diagnostics.Process();
-
-            //Set the window to run hidden?
-            pProcess.StartInfo.CreateNoWindow = true;
-
+            //Set the window to run hidden
+            pProcess.StartInfo.CreateNoWindow = false;
             //strCommand is path and file name of command to run
             pProcess.StartInfo.FileName = strCommand;
-
             //strCommandParameters are parameters to pass to program
             pProcess.StartInfo.Arguments = strCommandParameters;
-
             pProcess.StartInfo.UseShellExecute = false;
-
             //Set output of program to be written to process output stream
             pProcess.StartInfo.RedirectStandardOutput = true;
-
             //Optional
             pProcess.StartInfo.WorkingDirectory = strWorkingDirectory;
-
             //Start the process
             pProcess.Start();
-
             //Get program output
             string strOutput = pProcess.StandardOutput.ReadToEnd();
             textBlock2.Text = textBlock2.Text + strOutput;
@@ -92,7 +81,40 @@ namespace Youtube_Downloader_Plus
 
         private void Run_Download(object sender, RoutedEventArgs e)
         {
+            string strCommand = "W:\\VIDEO\\OTHER\\YOUTUBE Staging\\youtube-dl.exe";
+            string strCommandParameters = "https://youtu.be/YE7VzlLtp-4 -i -o \"%(uploader)s/%(upload_date)s - %(title)s - (%(duration)ss) [%(id)s].%(ext)s\" -f bestvideo+bestaudio --youtube-include-dash-manifest --merge-output mkv --write-description --add-metadata --all-subs --embed-subs";
+            string strWorkingDirectory = "";
 
+            if (System.IO.Directory.Exists(tbPath.Text))
+            {
+                strWorkingDirectory = tbPath.Text;
+            }
+            else
+            {
+                strWorkingDirectory = "W:\\VIDEO\\OTHER\\YOUTUBE Staging\\!TEMP - Copy";
+            }
+
+            //Create process
+            System.Diagnostics.Process pProcess = new System.Diagnostics.Process();
+            //Set the window to run hidden
+            pProcess.StartInfo.CreateNoWindow = false;
+            //strCommand is path and file name of command to run
+            pProcess.StartInfo.FileName = strCommand;
+            //strCommandParameters are parameters to pass to program
+            pProcess.StartInfo.Arguments = strCommandParameters;
+            pProcess.StartInfo.UseShellExecute = false;
+            //Set output of program to be written to process output stream
+            pProcess.StartInfo.RedirectStandardOutput = true;
+            //Optional
+            pProcess.StartInfo.WorkingDirectory = strWorkingDirectory;
+            //Start the process
+            pProcess.Start();
+            //Get program output
+            string strOutput = pProcess.StandardOutput.ReadToEnd();
+            textBlock2.Text = textBlock2.Text + strOutput;
+
+            //Wait for process to finish
+            pProcess.WaitForExit();
         }
 
     }
