@@ -23,7 +23,7 @@
                         <Run Text="Adjust the options below and click the Download button!"/>
                         <LineBreak/>
                         <LineBreak/><Run Text="Video/Playlist/Channel URL: "/>
-                        <LineBreak/><TextBox x:Name="tbURL" Text="" Width="266" />
+                        <LineBreak/><TextBox x:Name="tbURL" Text="https://youtu.be/YE7VzlLtp-4" Width="266" />
                         <LineBreak/>
                         <LineBreak/><CheckBox x:Name="cbSubs" Content="Download subtitles/closed captioning"/>
                         <LineBreak/><CheckBox x:Name="cbDescription" Content="Download description (writes seperate file)"/>

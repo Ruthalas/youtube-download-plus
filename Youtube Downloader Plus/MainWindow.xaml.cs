@@ -81,19 +81,49 @@ namespace Youtube_Downloader_Plus
 
         private void Run_Download(object sender, RoutedEventArgs e)
         {
-            string strCommand = "W:\\VIDEO\\OTHER\\YOUTUBE Staging\\youtube-dl.exe";
-            string strCommandParameters = "https://youtu.be/YE7VzlLtp-4 -i -o \"%(uploader)s/%(upload_date)s - %(title)s - (%(duration)ss) [%(id)s].%(ext)s\" -f bestvideo+bestaudio --youtube-include-dash-manifest --merge-output mkv --write-description --add-metadata --all-subs --embed-subs";
-            string strWorkingDirectory = "";
 
+            // Begin construction of youtube-dl command with calling it's location (per settings)
+            string strCommand = "W:\\VIDEO\\OTHER\\YOUTUBE Staging\\youtube-dl.exe";
+
+            // Add URL to youtube-dl command
+            string strCommandParameters = tbURL.Text;
+            // Add ignore errors command
+            strCommandParameters = strCommandParameters + " -i";
+            // Add output file-name formatting string
+            strCommandParameters = strCommandParameters + " -o \"%(uploader)s/%(upload_date)s - %(title)s - (%(duration)ss) [%(id)s].%(ext)s\"";
+            // Add quality parameters (for absolute best)
+            strCommandParameters = strCommandParameters + " -f bestvideo+bestaudio --youtube-include-dash-manifest";
+            // Add output container (MKV)
+            strCommandParameters = strCommandParameters + " --merge-output mkv";
+            // Add metdata to file to command
+            strCommandParameters = strCommandParameters + " --add-metadata";
+            // If user has checked the 'Download Description' checkbox, add that to the youtube-dl command
+            if (cbDescription.IsChecked ?? false)
+            {
+                strCommandParameters = strCommandParameters + " --write-description";
+            }
+            // If user has checked the 'Download Subtitles' checkbox, add that to the command
+            if (cbSubs.IsChecked ?? false)
+            {
+                strCommandParameters = strCommandParameters + " --all-subs --embed-subs";
+            }
+
+            MessageBox.Show(strCommandParameters);
+
+            // Let's get this working directory sorted out. First let's get a variable set up for it.
+            string strWorkingDirectory = "";
+            // Then let's check whether the path provided by the user in the textbox is valid
             if (System.IO.Directory.Exists(tbPath.Text))
             {
-                textBlock2.Text = textBlock2.Text + "Provided path checks out, using it for download.";
+                // If valid, use it
+                textBlock2.Text = textBlock2.Text + "Provided path is valid, using it for download.\n";
                 strWorkingDirectory = tbPath.Text;
             }
             else
             {
-                textBlock2.Text = textBlock2.Text + "Provided path isn't valid, falling back to current directory.";
-                strWorkingDirectory = "W:\\VIDEO\\OTHER\\YOUTUBE Staging\\!TEMP - Copy";
+                // If not valid, fetch the directory the program was run in, and use it instead
+                textBlock2.Text = textBlock2.Text + "Provided path isn't valid, falling back to current directory.\n";
+                strWorkingDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
             }
 
             //Create process
@@ -118,6 +148,5 @@ namespace Youtube_Downloader_Plus
             //Wait for process to finish
             pProcess.WaitForExit();
         }
-
     }
 }
