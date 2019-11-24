@@ -29,14 +29,20 @@
                         <LineBreak/><CheckBox x:Name="cbDescription" Content="Download description (writes seperate file)"/>
                         <LineBreak/><Run Text="Save Path: "/>
                         <LineBreak/><TextBox x:Name="tbPath" Text="" Width="266" />
+                        <LineBreak/>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <LineBreak/>
+                        <LineBreak/><TextBox x:Name="APIKey" Text="Youtube API Key" Width="180" />
                     </TextBlock>
 
                     <ScrollViewer Grid.Column="0" Grid.Row="1" Margin="2,2,2,2" Grid.ColumnSpan="2" >
                         <TextBlock Name="textBlock2"  Background="lightgray" Padding="5,5,5,5" Text="Log Output:&#10;"/>
                     </ScrollViewer>
-                    <Button Name="btGetVersion" Content="yt-dl Version" HorizontalAlignment="Left" Margin="99,226,0,0" VerticalAlignment="Top" Width="75" Click="Get_Version" Grid.Column="1"/>
+                    <Button Name="btGetVersion" Content="yt-dl Version" HorizontalAlignment="Left" Margin="99,231,0,0" VerticalAlignment="Top" Width="75" Click="Get_Version" Grid.Column="1"/>
                     <Button Name="btBrowse" Content="Browse" HorizontalAlignment="Left" Margin="179.292,134,0,0" VerticalAlignment="Top" Width="75" Click="Browse_For_Folder" Grid.Column="1"/>
-                    <Button Name="btRunDownload" Content="Download" HorizontalAlignment="Left" Margin="179.292,226,0,0" VerticalAlignment="Top" Width="75" Click="Run_Download" Grid.Column="1"/>
+                    <Button Name="btRunDownload" Content="Download" HorizontalAlignment="Left" Margin="179,231,0,0" VerticalAlignment="Top" Width="75" Click="Run_Download" Grid.Column="1"/>
                 </Grid>
             </TabItem>
 
