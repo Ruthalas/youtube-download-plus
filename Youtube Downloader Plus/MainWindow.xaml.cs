@@ -83,7 +83,7 @@ namespace Youtube_Downloader_Plus
         {
 
             // Begin construction of youtube-dl command with calling it's location (per settings)
-            string strCommand = "W:\\VIDEO\\OTHER\\YOUTUBE Staging\\youtube-dl.exe";
+            string strCommand = "W:\\VIDEO\\YOUTUBE\\youtube-dl.exe";
 
             // Add URL to youtube-dl command
             string strCommandParameters = tbURL.Text;
@@ -108,7 +108,7 @@ namespace Youtube_Downloader_Plus
                 strCommandParameters = strCommandParameters + " --all-subs --embed-subs";
             }
 
-            MessageBox.Show(strCommandParameters);
+            //MessageBox.Show(strCommandParameters);
 
             // Let's get this working directory sorted out. First let's get a variable set up for it.
             string strWorkingDirectory = "";
