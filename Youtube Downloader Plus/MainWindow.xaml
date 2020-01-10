@@ -22,11 +22,11 @@
                     <TextBlock x:Name="textBlock1" Grid.Column="0" Grid.Row="0" Margin="2,2,2,2" Padding="5,5,5,5" Background="lightgray" Grid.ColumnSpan="2"><Run Text="Adjust the options below and click the Download button!"/><LineBreak/><LineBreak/><Run Text="Video/Playlist/Channel URL: "/><LineBreak/><InlineUIContainer>
                             <TextBox x:Name="tbURL" Text="https://youtu.be/YE7VzlLtp-4" Width="266" />
                         </InlineUIContainer><LineBreak/><LineBreak/><InlineUIContainer>
-                            <CheckBox x:Name="cbSubs" Content="Download subtitles/closed captioning"/>
+                            <CheckBox x:Name="cbSubs" Content="Download subtitles/closed captioning" IsChecked="True"/>
                         </InlineUIContainer><LineBreak/><InlineUIContainer>
-                            <CheckBox x:Name="cbDescription" Content="Download description (writes seperate file)"/>
+                            <CheckBox x:Name="cbDescription" Content="Download description (writes seperate file)" IsChecked="True"/>
                         </InlineUIContainer><LineBreak/><InlineUIContainer>
-                            <CheckBox x:Name="cbThumbnail" Content="Download thumbnail (writes seperate file)"/>
+                            <CheckBox x:Name="cbThumbnail" Content="Download thumbnail (writes seperate file)" IsChecked="True"/>
                         </InlineUIContainer><LineBreak/><Run Text="Save Path: "/><LineBreak/><InlineUIContainer>
                             <TextBox x:Name="tbPath" Text="" Width="266" />
                         </InlineUIContainer><LineBreak/><LineBreak/><LineBreak/><LineBreak/><LineBreak/><InlineUIContainer>
