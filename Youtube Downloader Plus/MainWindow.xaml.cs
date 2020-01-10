@@ -90,7 +90,7 @@ namespace Youtube_Downloader_Plus
             // Add ignore errors command
             strCommandParameters = strCommandParameters + " -i";
             // Add output file-name formatting string
-            strCommandParameters = strCommandParameters + " -o \"%(uploader)s [$(channel_id)s]/%(upload_date)s - %(title)s - (%(duration)ss) [%(id)s].%(ext)s\"";
+            strCommandParameters = strCommandParameters + " -o \"%(uploader)s [%(channel_id)s]/%(upload_date)s - %(title)s - (%(duration)ss) [%(id)s].%(ext)s\"";
             // Add quality parameters (for absolute best)
             strCommandParameters = strCommandParameters + " -f bestvideo+bestaudio --youtube-include-dash-manifest";
             // Add output container (MKV)
