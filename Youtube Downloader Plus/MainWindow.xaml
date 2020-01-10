@@ -19,29 +19,25 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock x:Name="textBlock1" Grid.Column="0" Grid.Row="0" Margin="2,2,2,2" Padding="5,5,5,5" Background="lightgray" Grid.ColumnSpan="2">
-                        <Run Text="Adjust the options below and click the Download button!"/>
-                        <LineBreak/>
-                        <LineBreak/><Run Text="Video/Playlist/Channel URL: "/>
-                        <LineBreak/><TextBox x:Name="tbURL" Text="https://youtu.be/YE7VzlLtp-4" Width="266" />
-                        <LineBreak/>
-                        <LineBreak/><CheckBox x:Name="cbSubs" Content="Download subtitles/closed captioning"/>
-                        <LineBreak/><CheckBox x:Name="cbDescription" Content="Download description (writes seperate file)"/>
-                        <LineBreak/><Run Text="Save Path: "/>
-                        <LineBreak/><TextBox x:Name="tbPath" Text="" Width="266" />
-                        <LineBreak/>
-                        <LineBreak/>
-                        <LineBreak/>
-                        <LineBreak/>
-                        <LineBreak/>
-                        <LineBreak/><TextBox x:Name="APIKey" Text="Youtube API Key" Width="180" />
-                    </TextBlock>
+                    <TextBlock x:Name="textBlock1" Grid.Column="0" Grid.Row="0" Margin="2,2,2,2" Padding="5,5,5,5" Background="lightgray" Grid.ColumnSpan="2"><Run Text="Adjust the options below and click the Download button!"/><LineBreak/><LineBreak/><Run Text="Video/Playlist/Channel URL: "/><LineBreak/><InlineUIContainer>
+                            <TextBox x:Name="tbURL" Text="https://youtu.be/YE7VzlLtp-4" Width="266" />
+                        </InlineUIContainer><LineBreak/><LineBreak/><InlineUIContainer>
+                            <CheckBox x:Name="cbSubs" Content="Download subtitles/closed captioning"/>
+                        </InlineUIContainer><LineBreak/><InlineUIContainer>
+                            <CheckBox x:Name="cbDescription" Content="Download description (writes seperate file)"/>
+                        </InlineUIContainer><LineBreak/><InlineUIContainer>
+                            <CheckBox x:Name="cbThumbnail" Content="Download thumbnail (writes seperate file)"/>
+                        </InlineUIContainer><LineBreak/><Run Text="Save Path: "/><LineBreak/><InlineUIContainer>
+                            <TextBox x:Name="tbPath" Text="" Width="266" />
+                        </InlineUIContainer><LineBreak/><LineBreak/><LineBreak/><LineBreak/><LineBreak/><InlineUIContainer>
+                            <TextBox x:Name="APIKey" Text="Youtube API Key" Width="180" />
+                        </InlineUIContainer></TextBlock>
 
                     <ScrollViewer Grid.Column="0" Grid.Row="1" Margin="2,2,2,2" Grid.ColumnSpan="2" >
                         <TextBlock Name="textBlock2"  Background="lightgray" Padding="5,5,5,5" Text="Log Output:&#10;"/>
                     </ScrollViewer>
                     <Button Name="btGetVersion" Content="yt-dl Version" HorizontalAlignment="Left" Margin="99,231,0,0" VerticalAlignment="Top" Width="75" Click="Get_Version" Grid.Column="1"/>
-                    <Button Name="btBrowse" Content="Browse" HorizontalAlignment="Left" Margin="179.292,134,0,0" VerticalAlignment="Top" Width="75" Click="Browse_For_Folder" Grid.Column="1"/>
+                    <Button Name="btBrowse" Content="Browse" HorizontalAlignment="Left" Margin="179,150,0,0" VerticalAlignment="Top" Width="75" Click="Browse_For_Folder" Grid.Column="1" RenderTransformOrigin="0.522,0.262"/>
                     <Button Name="btRunDownload" Content="Download" HorizontalAlignment="Left" Margin="179,231,0,0" VerticalAlignment="Top" Width="75" Click="Run_Download" Grid.Column="1"/>
                 </Grid>
             </TabItem>
