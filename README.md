@@ -5,8 +5,8 @@
 
 Screenshot:
 
-![WPF Abomination](https://i.imgur.com/jl3wzoY.png?raw=true)
+![WPF Abomination](https://i.imgur.com/XXLI9E9.png?raw=true)
 
 The HTA version looks like this:
 
-![HTA Abomination](https://i.imgur.com/XXLI9E9.png?raw=true)
+![HTA Abomination](https://i.imgur.com/jl3wzoY.png?raw=true)
