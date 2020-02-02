@@ -145,6 +145,8 @@ namespace Youtube_Downloader_Plus
             pProcess.StartInfo.WorkingDirectory = strWorkingDirectory;
             //Start the process
             pProcess.Start();
+
+            //pProcess.MoveWindow(pProcess.MainWindowHandle, posX, 0, 50, 50, true);
             //Get program output
             string strOutput = pProcess.StandardOutput.ReadToEnd();
             textBlock2.Text = textBlock2.Text + strOutput;
