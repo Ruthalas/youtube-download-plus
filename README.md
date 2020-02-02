@@ -5,15 +5,19 @@
 
 # Current status
 Version 1.0 implements basic functionality:
--Download a video, playlist, or Channel
--Choose whether to embed subtitles/closed captioning
--Choose whether to download thumbnail
--Choose whether to download description
--Select save path
+
+* Download a video, playlist, or Channel
+* Choose whether to embed subtitles/closed captioning
+* Choose whether to download thumbnail
+* Choose whether to download description
+* Select save path
 
 The quality is currently unconfigurable and set to max, per the following switches:
+
 ```-f bestvideo+bestaudio --youtube-include-dash-manifest```
+
 Output is currently hardcoded to use the mkv container (to best support the various possible encodings).
+
 ```--merge-output mkv```
 
 # Screenshots
