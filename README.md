@@ -13,11 +13,8 @@ Version 1.0 implements basic functionality:
 * Select save path
 
 The quality is currently unconfigurable and set to max, per the following switches:
-
 ```-f bestvideo+bestaudio --youtube-include-dash-manifest```
-
 Output is currently hardcoded to use the mkv container (to best support the various possible encodings).
-
 ```--merge-output mkv```
 
 # Screenshots
