@@ -1,5 +1,5 @@
 # Youtube Download Plus
- This tool will provide a GUI with which to leverage youtube-dl to download youtube content, then provide options for formatting to fit KODI's TV show formatting requirements.
+ This tool will provide a simple GUI with which to leverage [youtube-dl](https://youtube-dl.org/) to download youtube content, then provide options for formatting and organizing, such that the results fit KODI's TV show formatting requirements.
 
  This project is a re-write of an existing HTA+VBS project in C++.
 
@@ -26,6 +26,6 @@ Version 1.0:
 
 ![WPF Abomination](https://i.imgur.com/XXLI9E9.png?raw=true)
 
-The HTA version looks like this:
+The HTA version looks like this (to provide a sense of where this is going):
 
 ![HTA Abomination](https://i.imgur.com/jl3wzoY.png?raw=true)
