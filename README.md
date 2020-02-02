@@ -1,10 +1,12 @@
 # Youtube Download Plus
- This tool will provide a simple GUI with which to leverage [youtube-dl](https://youtube-dl.org/) to download youtube content, then provide options for formatting and organizing, such that the results fit KODI's TV show formatting requirements.
+This tool will provide a simple GUI with which to leverage [youtube-dl](https://youtube-dl.org/) to download youtube content, then provide options for formatting and organizing, such that the results fit KODI's TV show formatting requirements.
 
- This project is a re-write of an existing HTA+VBS project in C++.
+This tool is partially in service of the [Distributed Youtube Archive project](https://archives.team).
+
+(This project is a re-write of an existing HTA+VBS project in C++.)
 
 # Current status
-Version 1.0 implements basic functionality:
+ Version 1.0 implements basic functionality:
 
 * Download a video, playlist, or Channel
 * Choose whether to embed subtitles/closed captioning
