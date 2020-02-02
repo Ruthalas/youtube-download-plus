@@ -3,6 +3,10 @@
 
  This project is a re-write of an existing HTA+VBS project in C++.
 
+Screenshot:
+
+![WPF Abomination](https://i.imgur.com/jl3wzoY.png?raw=true)
+
 The HTA version looks like this:
 
-![HTA Abomination](https://i.imgur.com/jl3wzoY.png?raw=true)
+![HTA Abomination](https://i.imgur.com/XXLI9E9.png?raw=true)
