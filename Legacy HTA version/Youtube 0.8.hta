@@ -1,0 +1,588 @@
+<!--
+' Youtube Downloader and Formatter
+' Leverages youtube-dl, ffmpeg, and the youtube API
+' Downloads videos and channels, and organizes them for use in KODI
+' 
+' 2020-04-04 - Version 0.8
+'
+' Code: Ruthalas
+'       ruthalas.bounce@gmail.com
+'
+' Changes in this version:
+' -Removing thumbnail fetch, as youtube-dl already does this
+'
+-->
+
+<html>
+<head>
+<title>Youtube Downloader and Formatter</title>
+<HTA:APPLICATION 
+     APPLICATIONNAME="Youtube Downloader and Formatter"
+     SCROLL="no"
+     SINGLEINSTANCE="yes"
+     WINDOWSTATE="normal"
+	 SYSMENU="yes"
+	 ICON="proquota.exe"
+>
+<style>
+html {width:100%; height:100%;}
+body {background: #99ccff; width:100%; height:100%;}
+#div1 {background-color:LightBlue; width: 100%; height: 200px; word-break:keep-all; overflow:auto;}
+p.margin {margin: 0cm;}
+</style>
+</head>
+
+<!-- Code to do the searching -->
+<script language="VBScript">
+	
+	Sub addShowInfo		
+		' Clear the log box
+		writeDivContent 1, "", True, False, False, False
+		
+		youtubeAPIkey = APIkey.Value
+		path = directoryInput3.Value
+		
+		' If the user filled in a directory...
+		Set fso = CreateObject("Scripting.FileSystemObject")
+		If (fso.FolderExists(path)) Then
+			writeDivContent 1, "Searching provided path for video description file to examine.", False, False, True, False
+			exampleVideoID = findExampleVideo(path)
+			
+			If exampleVideoID <> "" Then
+				writeDivContent 1, "Description file was found. Launching INFO.vbs to add show NFO file.", False, False, True, False
+				' Call the sub that runs the INFO.vbs file, and include the video ID and the "sh" flag to indicate show info needs to be added
+				addInfoSub path, exampleVideoID, youtubeAPIkey, "sh"				
+			Else
+				writeDivContent 1, "No description file was found. Please use youtube-dl description flag to download descriptions.", False, False, True, False
+			End If
+			
+		Else
+			writeDivContent 1, "Please select a valid directory", False, False, True, False
+		End If
+	End Sub
+	
+	Function findExampleVideo (pathToSearch)
+		' Have we found an example video description file?
+		foundExampleFile = False
+		exampleVideoID = ""
+		
+		Set fso = CreateObject("Scripting.FileSystemObject")
+		Set topFolderObject = fso.GetFolder(pathToSearch)
+		
+		'Let's look for '.description' files in the current folder (generated when using youtube-dl to download videos)
+		Set colFiles = topFolderObject.Files
+		For Each objFile in colFiles
+			If LCase(fso.GetExtensionName(objFile.Name)) = "description" Then
+				' We found one! Let's record the filename and flag our success
+				exampleVideoID = Left(Right(objFile.Name,24),11)
+				foundExampleFile = True
+			End If
+		Next
+		
+		' If we didn't find a description file in the parent folder, let's recursively search subfolders until we do
+		If NOT foundExampleFile Then
+			' Get subfolders
+			Set subFolderObject = topFolderObject.SubFolders
+			For Each subFolder in subFolderObject
+				' For every subfolder, call the findExample script again, recursively searching until a single description file is found
+				exampleVideoID = findExampleVideo (subFolder.Path)
+			Next
+		End If
+		' Return the video ID (blank if none was found)
+		findExampleVideo = exampleVideoID
+	End Function
+	
+	Sub checkForFFMPEG
+		Set oShell = CreateObject( "WScript.Shell" )
+		Set fso = CreateObject("Scripting.FileSystemObject")
+		' Get contents of path variable- a list of folders where windows will look for ffmpeg
+		pathLocations = oShell.ExpandEnvironmentStrings("%path%")
+		pathLocations = split(pathLocations,";")
+		' Loop through folders in Path and see if ffmpeg exists in any of them
+		ffmpegFound = 0
+		for each aLocation in pathLocations
+			If fso.FileExists(aLocation & "\ffmpeg.exe") Then
+				ffmpegFound = 1
+			End If
+		Next
+		' If we didn't find an instance of ffmpeg, let the user know
+		If ffmpegFound <> 1 Then
+			msgBox "yo dawg. ffmpeg ain't home" & vbcrlf & "(Please install FFMPEG to Path)", vbOKOnly, "FFMPEG not found"
+		End If
+	End Sub
+	
+	Sub checkSize
+	
+		' IS VIDEO OR CHANNEL!!!!????
+		
+		
+		' Grab the channel input from the text entry box
+		channelURL = videoInput.Value
+		
+		urlSplit = Split(channelURL,".com/")
+
+		videoType = "unknown"
+		If Left(urlSplit(1),3) = "wat" Then			' video: 	https://www.youtube.com/watch?v=0FqiMYWUbow
+			writeDivContent 1, "Individual video link detected" & channelPlaylist, True, False, True, True
+			videoType = "video"
+			channelPlaylist = channelURL
+		ElseIf Left(urlSplit(1),3) = "use" Then	' u/channel:	https://www.youtube.com/user/DigibronyMLP
+			writeDivContent 1, "Channel link detected (user style)" & channelPlaylist, True, False, True, True
+			videoType = "user_channel"
+			channelPlaylist = channelURL
+		ElseIf Left(urlSplit(1),3) = "cha" Then	' channel:		https://www.youtube.com/channel/UCryCoTi-3q-Kuruq2NLcN4Q
+			writeDivContent 1, "Channel link detected" & channelPlaylist, True, False, True, True
+			videoType = "channel"
+			' Convert the channel into a channel playlist
+			writeDivContent 1, "Converted channel URL to playlist URL: " & channelPlaylist, False, False, True, True
+			channelPlaylist = Replace(channelURL,"e.com/channel/UC","e.com/playlist?list=UU")
+		ElseIf Left(urlSplit(1),3) = "pla" Then	' playlist:		https://www.youtube.com/playlist?list=PLw6UBKuaMyFCtHWP_OrZjBgEyf0Is4ez1
+			writeDivContent 1, "Playlist link detected" & channelPlaylist, True, False, True, True
+			videoType = "playlist"
+			channelPlaylist = channelURL
+		Else
+			writeDivContent 1, "Unknown link type- cannot parse<br>(If playlist, make sure you have the playlist URL, not a video within the playlist)" & channelPlaylist, True, False, True, True
+		End If
+		
+		' If we figured out the type of link, move into parsing it, else stop
+		If (videoType <> "unknown") Then
+			
+			writeDivContent 1, "Launching youtube-dl to check the size of channel/playlist/video.", False, False, True, True
+			
+			commandStr = "cmd /c youtube-dl.exe -jq --format bestvideo """ & channelPlaylist & """"
+			Set WshShell = CreateObject("WScript.Shell")
+			Set executor = WshShell.Exec(commandStr)
+			executor.StdIn.Close
+			' Capture the shell output and split it on carraige returns
+			result = executor.StdOut.ReadAll
+			
+			totalEpisodeSize = 0
+			
+			' Split on each episode
+			episodeResult = Split(result,"episode_number")
+			' Look at each episode in turn
+			writeDivContent 1, Ubound(episodeResult) & " episodes found.", False, False, True, True
+			episodeCount = 0
+			For Each episodeStr in episodeResult
+
+				maxFileSizeFound = 0 'bits
+				
+				' Split on quotes
+				episodeStrSplit = Split(episodeStr,chr(34))
+				' Look at each chunk in turn (let's find the several filesizes- for each quality)
+				index = 0
+				For Each entryStr in episodeStrSplit
+					If entryStr = "filesize" Then
+						currentFileSize = episodeStrSplit(index+1)
+						' Replace any of :_ ,_ } { with "" so the file-size is alone
+						currentFileSize = Replace(Replace(Replace(Replace(currentFileSize,": ",""),", ",""),"}",""),"{","")
+						' Ignoring null results...
+						If currentFileSize <> "null" Then
+							' Convert file size in bits from string to long (CInt overflows)
+							currentFileSize = Clng(currentFileSize)
+							' If the currently noted filesize is bigger than the maxfilesize we've seen, update the max file size
+							If (currentFileSize > maxFileSizeFound) Then
+								maxFileSizeFound = currentFileSize
+							End If
+						End If
+					End If
+					index = index + 1
+				Next
+				
+				totalEpisodeSize = totalEpisodeSize + Round((maxFileSizeFound * 0.0000009765625),4)
+				
+				' Single videos get counted twice, oops. This allows a count in every case except a single video's second loop. 
+				If (Round((maxFileSizeFound * 0.0000009765625),0) > 1) Then
+					episodeCount = episodeCount + 1
+					writeDivContent 1, " &#x25AA; Episode size: " & Round((maxFileSizeFound * 0.0000009765625),0) & " Megabytes", False, False, True, True
+				End If
+			Next
+			
+			writeDivContent 1, "Total size: " & Round(totalEpisodeSize/1024,1) & " GB comprising " & episodeCount & " videos", False, False, True, True
+		End If ' video type if
+		
+	End Sub
+	
+	Sub downloadVideo
+		
+		' Grab the channel input from the text entry box
+		channelURL = videoInput.Value
+		
+		' Compose the command, including a record txt if the user checked the box for it!
+		If (keepList.checked) Then
+			commandStr = "cmd /C youtube-dl.exe --download-archive downloaded.txt -i """ & channelURL & """ -o ""%(uploader)s/%(upload_date)s - %(title)s - (%(duration)ss) [%(id)s].%(ext)s"" -f bestvideo[ext=mp4]+bestaudio --write-description"
+			' Write out to the log that we took them seriously
+			writeDivContent 1, "User specified 'remember and skip downloaded'.<br>Downloaded clips will be recorded in 'downloaded.txt'<br>Videos listed there already will be skipped in this run.", False, False, True, True
+		Else
+			commandStr = "cmd /C youtube-dl.exe -i """ & channelURL & """ -o ""%(uploader)s/%(upload_date)s - %(title)s - (%(duration)ss) [%(id)s].%(ext)s"" -f bestvideo[ext=mp4]+bestaudio --write-description"
+			' Note that we aren't skipping any videos to the log
+			writeDivContent 1, "User specified no record of download. Downloading full channel.", False, False, True, True
+		End If
+		
+		writeDivContent 1, "Launching youtube-dl to download requested channel.", False, False, False, False
+		
+		Set WshShell = CreateObject("WScript.Shell")
+		Set executor = WshShell.Exec(commandStr)
+		executor.StdIn.Close
+		' Capture the shell output and split it on carraige returns
+		parts = Split(executor.StdOut.ReadAll,Chr(13) & Chr(10),-1)
+
+		For Each outputLine in parts
+			If (Left(outputLine,13) <> "Microsoft (R)") AND (Left(outputLine,13) <> "Copyright (C)") AND (Left(outputLine,13) <> "") Then
+				writeDivContent 1, outputLine, False, False, True, False
+			End If
+		Next
+		
+	End Sub
+	
+	Sub makeSeasons
+		' Clear the log box
+		'writeDivContent 1, "", True, False, False, False
+	
+		' Get path to directory where script has been run
+		'Dim oFileSystemObj: Set oFileSystemObj = CreateObject("Scripting.FileSystemObject")
+		'varDirectory = oFileSystemObj.GetAbsolutePathName(".")
+		varDirectory = directoryInput.Value
+		varSeasonStyle = GetSeasonStyleButtonValue
+		' If the user filled in a directory...
+		Set fso = CreateObject("Scripting.FileSystemObject")
+		If (fso.FolderExists(varDirectory)) Then
+			' If the user chose a season style...
+			If varSeasonStyle <> "" Then
+			
+				writeDivContent 1, "Sorting the following directory into season folders:<br>" & varDirectory, False, False, True, False
+
+				If varSeasonStyle = "yearSeason" Then
+					writeDivContent 1, "User selected 'seasons by years' structure.", False, False, True, True
+				ElseIf varSeasonStyle = "oneSeason" Then
+					writeDivContent 1, "User selected 'single season' structure.", False, False, True, True
+				End If
+				
+				fileList = folderContents(varDirectory)
+				' For each file in the folder...
+				For Each currentFile in fileList
+					' If the file name isn't zero...
+					If (currentFile <> "") Then
+						writeDivContent 1, " &#x25AA; " & currentFile, False, False, True, True
+						' Grab the left four characters, which ought to be the year in the date string
+						leftFour = Left(currentFile,4)
+						' Check if those left four are numerical, and likely to be the date string
+						If IsNumeric(leftFour) then
+						
+							' If the user wants the seasons based on the air year....
+							If varSeasonStyle = "yearSeason" Then
+								' Check if a season folder for this date-code exists
+								seasonFolderName = "Season " & leftFour
+								seasonFolderPath = varDirectory & "\" & seasonFolderName
+								currentFilePath = varDirectory & "\" & currentFile
+								' If a season folder is not present, make one
+								If NOT fso.FolderExists(seasonFolderPath) Then
+									writeDivContent 1, "&emsp;&#x25AA; Making " & seasonFolderName, False, False, True, True
+									fso.CreateFolder seasonFolderPath
+								End If
+								' Move file to appropriate Season Folder
+								writeDivContent 1, "&emsp;&#x25AA; Moving " & currentFile & " to " & seasonFolderName, False, False, True, True
+								fso.MoveFile currentFilePath, seasonFolderPath & "\"
+								
+							' Alternately, if the user wants all files in a single season...
+							ElseIf varSeasonStyle = "oneSeason" Then
+								seasonFolderName = "Season 1"
+								currentFilePath = varDirectory & "\" & currentFile
+								seasonFolderPath = varDirectory & "\" & seasonFolderName
+								' If a season folder is not present, make one
+								If NOT fso.FolderExists(seasonFolderPath) Then
+									writeDivContent 1, "&emsp;&#x25AA; Making " & seasonFolderName, False, False, True, True
+									fso.CreateFolder seasonFolderPath
+								End If
+								' Move file to the Season 1 Folder
+								writeDivContent 1, "&emsp;&#x25AA; Moving " & currentFile & " to " & seasonFolderName, False, False, True, True
+								fso.MoveFile currentFilePath, seasonFolderPath & "\"
+
+							End If
+							
+						End If						
+					End If
+				Next
+			Else
+				writeDivContent 1, "Please select a season style.", False, False, True, False
+			End If
+		Else
+			writeDivContent 1, "Please select a valid directory.", False, False, True, False
+		End If
+	End Sub
+
+	Sub addInfo
+		' Clear the log box
+		writeDivContent 1, "", True, False, False, False
+		
+		' Grab the path we are working with
+		path = directoryInput2.Value
+		youtubeAPIkey = APIkey.Value
+		varSeasonStyle2 = GetSeasonStyleButtonValue2
+		
+		' If the user filled in a directory...
+		Set fso = CreateObject("Scripting.FileSystemObject")
+		If (fso.FolderExists(path)) Then
+			' If the user chose a season style...
+			If varSeasonStyle2 <> "" Then
+			
+				If (varSeasonStyle2 = "yearSeason") Then
+					seasonUsesYear = "True" ' If True, seasons use year (ex: Season 2012, Season 2013)- else all are considered 'Season 1'
+				Else
+					seasonUsesYear = "False"
+				End If
+
+				writeDivContent 1, "Opening INFO.vbs to add info to files.", False, False, True, False
+				
+				' Use this sub to actually perform the adding of information (This allows us to redo the iterative portion)
+				addInfoSub path, seasonUsesYear, youtubeAPIkey, "ep"
+				
+				' Get subfolders
+				Set topFolderObject = fso.GetFolder(path)
+				Set subFolderObject = topFolderObject.SubFolders
+				For Each subFolder in subFolderObject
+					' For every subfolder, call the add info script again, recursively adding info to all subfolders
+					addInfoSub subFolder.Path, seasonUsesYear, youtubeAPIkey, "ep"
+				Next
+			Else
+				writeDivContent 1, "Please select a season style.", False, False, True, False
+			End If
+		Else
+			writeDivContent 1, "Please select a valid directory", False, False, True, False
+		End If
+	End Sub
+	
+	Sub addInfoSub(pathToAddTo, seasonUsesYear, youtubeAPIkey, actionToPerform) 'Adds either episode NFO or show NFO, depending on actionToPerform
+				
+		commandStr = "cmd /c cscript ""INFO.vbs"" """& pathToAddTo &""" """& youtubeAPIkey & """ """ & seasonUsesYear & """ """ & actionToPerform & """"
+		Set WshShell = CreateObject("WScript.Shell")
+		Set executor = WshShell.Exec(commandStr)
+		executor.StdIn.Close
+		' Capture the shell output and split it on carraige returns
+		parts = Split(executor.StdOut.ReadAll,Chr(13) & Chr(10),-1)
+
+		For Each outputLine in parts
+			If (Left(outputLine,13) <> "Microsoft (R)") AND (Left(outputLine,13) <> "Copyright (C)") AND (Left(outputLine,13) <> "") Then
+				writeDivContent 1, outputLine, False, False, True, False
+			End If
+		Next
+	End Sub
+	
+	Function GetSeasonStyleButtonValue()
+	  For i=0 to seasonStyle.length-1
+		If seasonStyle.Item(i).Checked Then
+		  GetSeasonStyleButtonValue = seasonStyle.Item(i).Value
+		  Exit Function
+		End If
+	  Next
+	  GetSeasonStyleButtonValue = ""
+	End Function
+
+	Function GetSeasonStyleButtonValue2()
+	  For i=0 to seasonStyle2.length-1
+		If seasonStyle2.Item(i).Checked Then
+		  GetSeasonStyleButtonValue2 = seasonStyle2.Item(i).Value
+		  Exit Function
+		End If
+	  Next
+	  GetSeasonStyleButtonValue2 = ""
+	End Function
+	
+	Function folderContents(folderPath)
+		Dim fso, folder, files
+		fileList = array()
+		' Use file system object to fetch the files within this folder
+		Set fso = CreateObject("Scripting.FileSystemObject")
+		Set folder = fso.GetFolder(folderPath)
+		Set files = folder.Files
+		' Add the files to a string for return
+		fileCount = 0
+		For each folderIdx In files
+			Redim preserve fileList(Ubound(fileList) + 1)
+			fileList(fileCount) = fso.GetFileName(fso.GetFile(folderIdx))
+			fileCount = fileCount + 1
+		Next
+		' Return list
+		folderContents = fileList
+	End Function
+	
+	Function IsAccessible(oFolder)
+		IsAccessible = False
+		On Error Resume Next
+		IsAccessible = (oFolder.SubFolders.Count >= 0)
+	End Function
+	
+	Sub refreshUI
+		' Call an invisible window to allow HTA form to update graphically
+		CreateObject("WScript.Shell").Run "%COMSPEC% /c",0,1
+	End Sub
+	
+	Sub writeDivContent (divNumber, divContent, clearPrevious, precedingBreak, trailingBreak, hitPageDown)
+		' If clearPrevious is requested, replace the contents of the div in question with ""
+		If clearPrevious Then
+			window.document.getElementById("div" & divNumber).innerHTML = ""
+		End If
+		' If precedingBreak is requested, add a "<BR>" to the current content of the div in question
+		If precedingBreak Then
+			window.document.getElementById("div" & divNumber).innerHTML = window.document.getElementById("div" & divNumber).innerHTML & "<BR>"
+		End If
+		' Now add the devContent to the div in question
+		window.document.getElementById("div" & divNumber).innerHTML = window.document.getElementById("div" & divNumber).innerHTML & divContent
+		' If trailingBreak is requested, add a "<BR>" to the current content of the div in question
+		If trailingBreak Then
+			window.document.getElementById("div" & divNumber).innerHTML = window.document.getElementById("div" & divNumber).innerHTML & "<BR>"
+		End If
+		' If hitPageDown is requested, hit PgDn on the div in question (a couple times?)
+		If hitPageDown Then
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+			window.document.getElementById("div" & divNumber).doScroll("pageDown")
+		End If
+	End Sub
+	
+</script>
+
+<!-- Resize the window -->
+<script type="text/javascript">
+    window.resizeTo(530,835);
+</script>
+
+<body onload="checkForFFMPEG">
+	
+	Use the tools below to acquire or format videos.
+	
+	<br>
+	<br>
+	<table class="downloadVideo">
+	  <tr>
+		<th colspan="2" align="center" bgcolor="#b3d9ff">Step 1. Download a channel or video.<br>(Size estimate takes ~2sec per video.)</th>
+	  </tr>
+	  <tr>
+		<td width="275">Channel or Video (URL) to download: </td>
+		<td><input id="videoInput" type="text" name="videoInput" value="" style="width:225px"></td>
+	  </tr>
+	  <tr>
+	    <td><input type="checkbox" name="keepList" id="keepList" checked><label for="keepList"> Remember and skip downloaded.</label></td>
+		<td align="right"><input style="width:110px" type="submit" value="Estimate Size" name="checkSize_button" id="checkSize_button" onClick="checkSize"> <input style="width:110px" type="submit" value="Download" name="download_button" id="download_button" onClick="downloadVideo"></td>
+	  </tr>
+	</table>
+	
+	
+	<hr>
+	<table class="makeSeasons">
+	  <tr>
+		<th colspan="2" align="center" bgcolor="#b3d9ff">Step 2. Sort the clips into seasons.<br>(Expects step 1 to be completed.)</th>
+	  </tr>
+	  <tr>
+		<td width="275">Directory to sort:</td>
+		<td><input id="directoryInput" type="text" name="directoryInput" value="" style="width:225px"></td>
+	  </tr>
+	  <tr>
+		<td align="left">
+		<input id="seasonStyle" type="radio" name="seasonStyle" value="oneSeason"> One season <input type="radio" name="seasonStyle" value="yearSeason" checked="checked"> Season by year 
+		</td>
+		<td align="right">
+		<input style="width:125px" type="submit" value="Sort" name="season_button" id="season_button" onClick="makeSeasons"></td>
+	  </tr>
+	</table>
+
+	<hr>
+	<table class="addInfo">
+	  <tr>
+		<th colspan="2" align="center" bgcolor="#b3d9ff">Step 3. Add NFO files <strike>& thumbnails</strike> to selected show folder.<br>(Includes subfolders. Expects at least step 1 to be completed.)</th>
+	  </tr>
+	  <tr>
+		<td width="275">Directory to add info to:</td>
+		<td><input id="directoryInput2" type="text" name="directoryInput2" value="" style="width:225px"></td>
+	  </tr>
+	  <tr>
+	  	<td align="left">
+		<input id="seasonStyle2" type="radio" name="seasonStyle2" value="oneSeason"> One season <input type="radio" name="seasonStyle2" value="yearSeason" checked="checked"> Season by year 
+		</td>
+		<td align="right"><input style="width:125px" type="submit" value="Add Episode Info" name="info_button" id="info_button" onClick="addInfo"></td>
+	  </tr>
+	</table>
+
+	<hr>
+	<table class="addShowInfo">
+	  <tr>
+		<th colspan="2" align="center" bgcolor="#b3d9ff">Step 4. Add NFO file for show to the selected folder.<br>(Expects at least one video from channel to be in path.)</th>
+	  </tr>
+	  <tr>
+		<td width="275">Show directory to add info to:</td>
+		<td><input id="directoryInput3" type="text" name="directoryInput3" value="" style="width:225px"></td>
+	  </tr>
+	  <tr>
+	  	<td align="left">
+		</td>
+		<td align="right"><input style="width:125px" type="submit" value="Add Show Info" name="info_button" id="info_button" onClick="addShowInfo"></td>
+	  </tr>
+	</table>
+	
+	<hr>
+	Log:
+	<div id="div1">
+	</div>
+	
+	<hr>
+	
+	<table class="apifield">
+		<tr>
+			<td width="150">Youtube API Key:</td>
+			<td><input id="APIkey" type="text" name="APIkey" value="AIzaSyAPXom8LH0kwG5nC4yO5PUqM1wMoky4yTM" style="width:350px"></td>
+		</tr>
+	</table>
+	
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
