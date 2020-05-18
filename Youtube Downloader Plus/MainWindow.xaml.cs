@@ -83,7 +83,7 @@ namespace Youtube_Downloader_Plus
         {
 
             // Begin construction of youtube-dl command with calling it's location (per settings)
-            string strCommand = "W:\\VIDEO\\YOUTUBE\\youtube-dl.exe";
+            string strCommand = "youtube-dl.exe";
 
             // Add URL to youtube-dl command
             string strCommandParameters = tbURL.Text;
