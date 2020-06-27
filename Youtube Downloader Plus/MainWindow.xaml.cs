@@ -14,6 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+// I apologize if this is a pile of hot garbage
+// This is my first time using both Visual Studio and WPF
+
 namespace Youtube_Downloader_Plus
 {
     /// <summary>
@@ -89,9 +92,18 @@ namespace Youtube_Downloader_Plus
             string strCommandParameters = tbURL.Text;
             // Add ignore errors command
             strCommandParameters = strCommandParameters + " -i";
-            // Add output file-name formatting string
-            strCommandParameters = strCommandParameters + " -o \"%(uploader)s [%(channel_id)s]/%(upload_date)s - %(title)s - (%(duration)ss) [%(id)s].%(ext)s\"";
-            // Add quality parameters (for absolute best)
+            // Begin output structure
+            strCommandParameters = strCommandParameters + " -o";
+            // Build output path, adding subfolder if selected
+            if (cbSubFolder.IsChecked ?? false)
+            {
+                strCommandParameters = strCommandParameters + " \"%(uploader)s [%(channel_id)s]/%(upload_date)s - %(title)s - (%(duration)ss) [%(id)s].%(ext)s\"";
+            }
+            else
+            {
+                strCommandParameters = strCommandParameters + " \"%(upload_date)s - %(title)s - (%(duration)ss) [%(id)s].%(ext)s\"";
+            }
+            // Add quality parameters for absolute best, including the manifest allows youtube-dl to find 4k footage, which is stored differently
             strCommandParameters = strCommandParameters + " -f bestvideo+bestaudio --youtube-include-dash-manifest";
             // Add output container (MKV)
             strCommandParameters = strCommandParameters + " --merge-output mkv";
@@ -112,6 +124,7 @@ namespace Youtube_Downloader_Plus
                 strCommandParameters = strCommandParameters + " --all-subs --embed-subs";
             }
 
+            // Uncomment the following line to display the final command. Useful for debugging.
             //MessageBox.Show(strCommandParameters);
 
             // Let's get this working directory sorted out. First let's get a variable set up for it.
