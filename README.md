@@ -5,14 +5,20 @@ This tool is partially in service of the [Distributed YouTube Archive project](h
 
 (This project is a re-write of an existing HTA+VBS project in C++.)
 
+# Dependencies
+Youtube-Download-Plus assumes you have the following tools installed and referenced in PATH:
+* youtube-dl
+* ffmpeg
+
 # Current status
- Version 1.0 implements basic functionality:
+ Version 1.1 includes the following functionality:
 
 * Download a video, playlist, or Channel
 * Choose whether to embed subtitles/closed captioning
 * Choose whether to download thumbnail
 * Choose whether to download description
 * Select save path
+* Toggle creation of a subfolder based on channel name and ID
 
 The quality is currently unconfigurable and set to max, per the following switches:
 
@@ -24,9 +30,9 @@ Output is currently hardcoded to use the mkv container (to best support the vari
 
 # Screenshots
 
-Version 1.0:
+Version 1.1:
 
-![WPF Abomination](https://i.imgur.com/XXLI9E9.png?raw=true)
+![WPF Abomination](https://i.imgur.com/rD1D1Y5.png?raw=true)
 
 The HTA version looks like this (to provide a sense of where this is going):
 
