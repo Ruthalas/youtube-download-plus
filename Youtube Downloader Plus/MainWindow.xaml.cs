@@ -104,7 +104,7 @@ namespace Youtube_Downloader_Plus
                 strCommandParameters = strCommandParameters + " \"%(upload_date)s - %(title)s - (%(duration)ss) [%(id)s].%(ext)s\"";
             }
             // Add quality parameters for absolute best, including the manifest allows youtube-dl to find 4k footage, which is stored differently
-            strCommandParameters = strCommandParameters + " -f bestvideo+bestaudio --youtube-include-dash-manifest";
+            strCommandParameters = strCommandParameters + " --format \"(bestvideo[vcodec = av01][height >= 4320][fps > 30] / bestvideo[vcodec = vp9.2][height >= 4320][fps > 30] / bestvideo[vcodec = vp9][height >= 4320][fps > 30] / bestvideo[vcodec = av01][height >= 4320] / bestvideo[vcodec = vp9.2][height >= 4320] / bestvideo[vcodec = vp9][height >= 4320] / bestvideo[height >= 4320] / bestvideo[vcodec = av01][height >= 2880][fps > 30] / bestvideo[vcodec = vp9.2][height >= 2880][fps > 30] / bestvideo[vcodec = vp9][height >= 2880][fps > 30] / bestvideo[vcodec = av01][height >= 2880] / bestvideo[vcodec = vp9.2][height >= 2880] / bestvideo[vcodec = vp9][height >= 2880] / bestvideo[height >= 2880] / bestvideo[vcodec = av01][height >= 2160][fps > 30] / bestvideo[vcodec = vp9.2][height >= 2160][fps > 30] / bestvideo[vcodec = vp9][height >= 2160][fps > 30] / bestvideo[vcodec = av01][height >= 2160] / bestvideo[vcodec = vp9.2][height >= 2160] / bestvideo[vcodec = vp9][height >= 2160] / bestvideo[height >= 2160] / bestvideo[vcodec = av01][height >= 1440][fps > 30] / bestvideo[vcodec = vp9.2][height >= 1440][fps > 30] / bestvideo[vcodec = vp9][height >= 1440][fps > 30] / bestvideo[vcodec = av01][height >= 1440] / bestvideo[vcodec = vp9.2][height >= 1440] / bestvideo[vcodec = vp9][height >= 1440] / bestvideo[height >= 1440] / bestvideo[vcodec = av01][height >= 1080][fps > 30] / bestvideo[vcodec = vp9.2][height >= 1080][fps > 30] / bestvideo[vcodec = vp9][height >= 1080][fps > 30] / bestvideo[vcodec = av01][height >= 1080] / bestvideo[vcodec = vp9.2][height >= 1080] / bestvideo[vcodec = vp9][height >= 1080] / bestvideo[height >= 1080] / bestvideo[vcodec = av01][height >= 720][fps > 30] / bestvideo[vcodec = vp9.2][height >= 720][fps > 30] / bestvideo[vcodec = vp9][height >= 720][fps > 30] / bestvideo[vcodec = av01][height >= 720] / bestvideo[vcodec = vp9.2][height >= 720] / bestvideo[vcodec = vp9][height >= 720] / bestvideo[height >= 720] / bestvideo) + (bestaudio[acodec = opus] / bestaudio) / best\"";
             // Add output container (MKV)
             strCommandParameters = strCommandParameters + " --merge-output mkv";
             // Add metdata to file to command
@@ -119,7 +119,7 @@ namespace Youtube_Downloader_Plus
                 strCommandParameters = strCommandParameters + " --write-thumbnail";
             }
             // If user has checked the 'Download Subtitles' checkbox, add that to the command
-                if (cbSubs.IsChecked ?? false)
+            if (cbSubs.IsChecked ?? false)
             {
                 strCommandParameters = strCommandParameters + " --all-subs --embed-subs";
             }
