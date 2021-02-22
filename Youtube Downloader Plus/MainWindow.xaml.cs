@@ -114,6 +114,7 @@ namespace Youtube_Downloader_Plus
             {
                 strCommandParameters = strCommandParameters + " --write-description";
             }
+            // If the user has checked the 'Download Thumbnail' checkbox, add that to the command
             if (cbThumbnail.IsChecked ?? false)
             {
                 strCommandParameters = strCommandParameters + " --write-thumbnail";
@@ -122,6 +123,11 @@ namespace Youtube_Downloader_Plus
             if (cbSubs.IsChecked ?? false)
             {
                 strCommandParameters = strCommandParameters + " --all-subs --embed-subs";
+            }
+            // If user has checked the 'Download JSON' checkbox, add that to the command
+            if (cbJson.IsChecked ?? false)
+            {
+                strCommandParameters = strCommandParameters + " --write-info-json";
             }
 
             // Uncomment the following line to display the final command. Useful for debugging.

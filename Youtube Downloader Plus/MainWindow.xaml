@@ -24,22 +24,25 @@
                         </InlineUIContainer><LineBreak/><LineBreak/><InlineUIContainer>
                             <CheckBox x:Name="cbSubs" Content="Download subtitles/closed captioning (embedded)" IsChecked="True"/>
                         </InlineUIContainer><LineBreak/><InlineUIContainer>
-                            <CheckBox x:Name="cbDescription" Content="Download description (writes seperate file)" IsChecked="True"/>
+                            <CheckBox x:Name="cbDescription" Content="Download description (writes separate file)" IsChecked="True"/>
                         </InlineUIContainer><LineBreak/><InlineUIContainer>
-                            <CheckBox x:Name="cbThumbnail" Content="Download thumbnail (writes seperate file)" IsChecked="True"/>
+                            <CheckBox x:Name="cbThumbnail" Content="Download thumbnail (writes separate file)" IsChecked="True"/>
+                        </InlineUIContainer><LineBreak/><InlineUIContainer>
+                            <CheckBox x:Name="cbJson" Content="Download Metadata as JSON (writes separate file)" IsChecked="False"/>   
                         </InlineUIContainer><LineBreak/><InlineUIContainer>
                             <CheckBox x:Name="cbSubFolder" Content="Create in Channel Subfolder" IsChecked="False"/>
-                        </InlineUIContainer><LineBreak/><Run Text="Save Path: "/><LineBreak/><InlineUIContainer>
+                        </InlineUIContainer><LineBreak/><Run Text="Save Path: "/><LineBreak/><LineBreak/><InlineUIContainer>
                             <TextBox x:Name="tbPath" Text="" Width="266" />
-                        </InlineUIContainer><LineBreak/><LineBreak/><LineBreak/><LineBreak/><LineBreak/><InlineUIContainer>
+                        </InlineUIContainer><LineBreak/><LineBreak/><LineBreak/><LineBreak/><InlineUIContainer>
                             <!--<TextBox x:Name="APIKey" Text="Youtube API Key" Width="180" />-->
+
                         </InlineUIContainer></TextBlock>
 
                     <ScrollViewer Grid.Column="0" Grid.Row="1" Margin="2,2,2,2" Grid.ColumnSpan="2" >
                         <TextBlock Name="textBlock2"  Background="lightgray" Padding="5,5,5,5" Text="Log Output:&#10;"/>
                     </ScrollViewer>
                     <!--<Button Name="btGetVersion" Content="yt-dl Version" HorizontalAlignment="Left" Margin="99,231,0,0" VerticalAlignment="Top" Width="75" Click="Get_Version" Grid.Column="1"/>-->
-                    <Button Name="btBrowse" Content="Browse" HorizontalAlignment="Left" Margin="179,165,0,0" VerticalAlignment="Top" Width="75" Click="Browse_For_Folder" Grid.Column="1" RenderTransformOrigin="0.522,0.262"/>
+                    <Button Name="btBrowse" Content="Browse" HorizontalAlignment="Left" Margin="179,180,0,0" VerticalAlignment="Top" Width="75" Click="Browse_For_Folder" Grid.Column="1" RenderTransformOrigin="0.522,0.262"/>
                     <Button Name="btRunDownload" Content="Download" HorizontalAlignment="Left" Margin="179,227,0,0" VerticalAlignment="Top" Width="75" Click="Run_Download" Grid.Column="1"/>
                 </Grid>
             </TabItem>
