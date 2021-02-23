@@ -39,7 +39,7 @@
                         </InlineUIContainer></TextBlock>
 
                     <ScrollViewer Grid.Column="0" Grid.Row="1" Margin="2,2,2,2" Grid.ColumnSpan="2" >
-                        <TextBlock Name="textBlock2"  Background="lightgray" Padding="5,5,5,5" Text="Log Output:&#10;"/>
+                        <TextBox Name="textBlock2"  Background="lightgray" Padding="5,5,5,5" Text="Log Output:&#10;"/>
                     </ScrollViewer>
                     <!--<Button Name="btGetVersion" Content="yt-dl Version" HorizontalAlignment="Left" Margin="99,231,0,0" VerticalAlignment="Top" Width="75" Click="Get_Version" Grid.Column="1"/>-->
                     <Button Name="btBrowse" Content="Browse" HorizontalAlignment="Left" Margin="179,195,0,0" VerticalAlignment="Top" Width="75" Click="Browse_For_Folder" Grid.Column="1" RenderTransformOrigin="0.522,0.262"/>
@@ -52,10 +52,18 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="2*"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+
+                    <TextBlock x:Name="textBlock3" Grid.Column="0" Grid.Row="0" Margin="2,2,2,2" Padding="5,5,5,5" Background="lightgray" Grid.ColumnSpan="2">
+                        <LineBreak/><Run Text="List of URLs to download ('batch') (Overrides URL): "/>
+                        <LineBreak/><Run Text="Ex: C:\batch.txt"/><LineBreak/><InlineUIContainer>
+                            <TextBox x:Name="batchFile" Text="" Width="266" />
+                        </InlineUIContainer>
+                        <LineBreak/><Run Text="List of previously downloaded ('archive'): "/>
+                        <LineBreak/><Run Text="Ex: C:\archive.txt"/><LineBreak/><InlineUIContainer>
+                            <TextBox x:Name="archiveFile" Text="" Width="266" />
+                        </InlineUIContainer>
+                    </TextBlock>
+
                 </Grid>
             </TabItem>
 

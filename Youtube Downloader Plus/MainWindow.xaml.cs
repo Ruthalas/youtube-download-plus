@@ -88,8 +88,18 @@ namespace Youtube_Downloader_Plus
             // Begin construction of youtube-dl command with calling it's location (per settings)
             string strCommand = "youtube-dl.exe";
 
-            // Add URL to youtube-dl command
-            string strCommandParameters = tbURL.Text;
+            string strCommandParameters = "";
+            // If user has entered a batch file, use it, otherwise use URL from URL field
+            if (batchFile.Text != string.Empty)
+            {
+                // Add batch file input to command string
+                strCommandParameters = strCommandParameters + " --batch-file \"" + batchFile.Text + "\"";
+            }
+            else
+            {
+                // Add URL to youtube-dl command
+                strCommandParameters = strCommandParameters + tbURL.Text;
+            }
             // Add ignore errors command
             strCommandParameters = strCommandParameters + " -i";
             // Begin output structure
@@ -130,8 +140,14 @@ namespace Youtube_Downloader_Plus
                 strCommandParameters = strCommandParameters + " --write-info-json";
             }
 
+            // If user has entered an archive file, use it
+            if (archiveFile.Text != string.Empty)
+            {
+                strCommandParameters = strCommandParameters + " --download-archive \"" + archiveFile.Text + "\"";
+            }
+
             // Uncomment the following line to display the final command. Useful for debugging.
-            //MessageBox.Show(strCommandParameters);
+            textBlock2.Text = textBlock2.Text + "Command: " + strCommand + " " + strCommandParameters + "\n";
 
             // Let's get this working directory sorted out. First let's get a variable set up for it.
             string strWorkingDirectory = "";
