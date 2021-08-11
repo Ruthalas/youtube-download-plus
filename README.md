@@ -1,7 +1,7 @@
 # Youtube Download Plus
 This tool will provide a simple GUI with which to leverage [youtube-dl](https://youtube-dl.org/) to download youtube content, then provide options for formatting and organizing, such that the results fit KODI's TV show formatting requirements.
 
-This tool is partially in service of the [Distributed YouTube Archive project](https://archives.team).
+This tool is partially in service of the Distributed YouTube Archive project (discord.gg rgBHGm9mTC).
 
 (This project is a re-write of an existing HTA+VBS project in C++.)
 
