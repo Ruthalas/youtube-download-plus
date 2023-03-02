@@ -61,7 +61,29 @@
                         <LineBreak/><Run Text="List of previously downloaded ('archive'): "/>
                         <LineBreak/><Run Text="Ex: C:\archive.txt"/><LineBreak/><InlineUIContainer>
                             <TextBox x:Name="archiveFile" Text="" Width="266" />
-                        </InlineUIContainer>
+                        </InlineUIContainer><LineBreak/><LineBreak/>
+                        <InlineUIContainer>
+                            <CheckBox x:Name="cbyoutubedl" Content="Use legacy youtube-dl (rather than default youtube-dlp)" IsChecked="False"/>
+                        </InlineUIContainer><LineBreak/>
+                    </TextBlock>
+
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="Info" HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" Width="54">
+                <Grid Margin="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="82*"/>
+                        <ColumnDefinition Width="285*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock x:Name="textBlock4" Grid.Column="0" Grid.Row="0" Margin="2,2,2,2" Padding="5,5,5,5" Background="lightgray" Grid.ColumnSpan="2">
+                        Repo: https://github.com/Ruthalas/youtube-download-plus<LineBreak></LineBreak>
+                        Version: 1.3<LineBreak></LineBreak>
+                        Changes: Added support for youtube-dlp<LineBreak></LineBreak><LineBreak></LineBreak>
+                        This tool assumes you have the following tools installed:<LineBreak></LineBreak> 
+                        -youtube-dl<LineBreak></LineBreak>
+                        -ffmpeg<LineBreak></LineBreak>
                     </TextBlock>
 
                 </Grid>
