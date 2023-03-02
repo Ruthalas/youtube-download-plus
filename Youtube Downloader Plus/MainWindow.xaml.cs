@@ -29,35 +29,6 @@ namespace Youtube_Downloader_Plus
             InitializeComponent();
         }
 
-        private void Get_Version(object sender, RoutedEventArgs e)
-        {
-            string strCommand = "W:\\VIDEO\\OTHER\\YOUTUBE Staging\\youtube-dl.exe";
-            string strCommandParameters = "--version";
-            string strWorkingDirectory = "W:\\VIDEO\\OTHER\\YOUTUBE Staging";
-
-            //Create process
-            System.Diagnostics.Process pProcess = new System.Diagnostics.Process();
-            //Set the window to run hidden
-            pProcess.StartInfo.CreateNoWindow = false;
-            //strCommand is path and file name of command to run
-            pProcess.StartInfo.FileName = strCommand;
-            //strCommandParameters are parameters to pass to program
-            pProcess.StartInfo.Arguments = strCommandParameters;
-            pProcess.StartInfo.UseShellExecute = false;
-            //Set output of program to be written to process output stream
-            pProcess.StartInfo.RedirectStandardOutput = true;
-            //Optional
-            pProcess.StartInfo.WorkingDirectory = strWorkingDirectory;
-            //Start the process
-            pProcess.Start();
-            //Get program output
-            string strOutput = pProcess.StandardOutput.ReadToEnd();
-            textBlock2.Text = textBlock2.Text + strOutput;
-
-            //Wait for process to finish
-            pProcess.WaitForExit();
-        }
-
         private void Browse_For_Folder(object sender, RoutedEventArgs e)
         {
             // Create a "Save As" dialog for selecting a directory (HACK)
@@ -173,9 +144,11 @@ namespace Youtube_Downloader_Plus
             pProcess.StartInfo.FileName = strCommand;
             //strCommandParameters are parameters to pass to program
             pProcess.StartInfo.Arguments = strCommandParameters;
+
             pProcess.StartInfo.UseShellExecute = false;
             //Set output of program to be written to process output stream
             pProcess.StartInfo.RedirectStandardOutput = true;
+            pProcess.StartInfo.RedirectStandardError = true;
             //Optional
             pProcess.StartInfo.WorkingDirectory = strWorkingDirectory;
             //Start the process
