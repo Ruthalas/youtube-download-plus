@@ -19,6 +19,7 @@ Youtube-Download-Plus assumes you have the following tools installed and referen
 * Choose whether to download description
 * Select save path
 * Toggle creation of a subfolder based on channel name and ID
+* Specify your own archive or batch txt
 * Toggle between using youtube-dl and youtube-dlp
 
 The quality is currently unconfigurable and set to max, per the following switches:
