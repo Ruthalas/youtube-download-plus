@@ -1,5 +1,5 @@
 # Youtube Download Plus
-This tool will provide a simple GUI with which to leverage [youtube-dlp](https://github.com/yt-dlp/yt-dlp) to download youtube content, then provide options for formatting and organizing, such that the results fit KODI's TV show formatting requirements.
+This tool will provide a simple GUI with which to leverage [youtube-dlp](https://github.com/yt-dlp/yt-dlp) to download youtube content, then provide options for formatting and organizing.
 
 This tool is partially in service of the Distributed YouTube Archive project (discord.gg rgBHGm9mTC).
 
